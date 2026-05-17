@@ -1,0 +1,526 @@
+/* ABOUTME: Global reset and base styles for the volleyball serve tracker */
+/* ABOUTME: Establishes dark sports-themed color palette and typographic foundation */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0e1117;
+  --surface: #1a1f2e;
+  --surface2: #242938;
+  --border: #2e3347;
+  --accent: #e8640a;
+  --accent-soft: rgba(232, 100, 10, 0.15);
+  --accent2: #2563eb;
+  --text: #e8eaf0;
+  --text-muted: #6b7280;
+  --error-net: #dc2626;
+  --error-oob: #9333ea;
+  --zone-bg: #1e2435;
+  --zone-hover: #2a3150;
+  --radius: 10px;
+  --radius-sm: 6px;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+.app-header {
+  padding: 1rem 0 1rem;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+
+/* ─── Nav ────────────────────────────────────────────────── */
+
+.header-nav {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.nav-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.app-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ─── Card ───────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1rem;
+}
+
+@media (min-width: 480px) {
+  .card { padding: 1.25rem 1.5rem; }
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+/* ─── Add Player Form ────────────────────────────────────── */
+
+.add-player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.field-row label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+input[type="number"],
+input[type="text"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 0.55rem 0.75rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+  border-color: var(--accent);
+}
+
+.input-short { width: 72px; }
+.input-long  { flex: 1; min-width: 120px; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  touch-action: manipulation;
+}
+
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:active { opacity: 0.75; }
+
+.error {
+  color: var(--error-net);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ─── Player Chips ───────────────────────────────────────── */
+
+.player-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.player-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--text);
+  font-size: 1rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.player-chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.player-chip.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.chip-number {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.chip-name {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.chip-name-editable {
+  cursor: text;
+  border-bottom: 1px dashed var(--border);
+}
+
+.chip-name-editable:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.chip-edit-input {
+  width: 90px;
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  color: var(--text);
+  font-size: 0.9rem;
+  padding: 0.1rem 0.3rem;
+  outline: none;
+}
+
+.chip-delete {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.1rem;
+  cursor: pointer;
+  margin-left: 0.15rem;
+  transition: color 0.1s;
+}
+
+.chip-delete:hover {
+  color: var(--error-net);
+}
+
+/* ─── Court Header ───────────────────────────────────────── */
+
+.court-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.court-header h2 {
+  margin-bottom: 0;
+}
+
+.btn-undo {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  touch-action: manipulation;
+}
+
+.btn-undo:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ─── Entry Layout ───────────────────────────────────────── */
+
+.entry-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 660px) {
+  .entry-layout { grid-template-columns: 1fr 1fr; }
+}
+
+/* ─── Court ──────────────────────────────────────────────── */
+
+.court-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.net-label, .server-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.net-label {
+  background: var(--accent2);
+  color: #fff;
+  padding: 0.2rem 2rem;
+  border-radius: 3px;
+  letter-spacing: 0.2em;
+}
+
+.court-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.zone-cell {
+  aspect-ratio: 1.4 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--zone-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s, transform 0.08s;
+  color: var(--text);
+  gap: 0.25rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 64px;
+}
+
+.zone-cell:hover {
+  border-color: var(--accent);
+  transform: scale(1.03);
+}
+
+.zone-cell:active {
+  transform: scale(0.97);
+}
+
+.zone-number {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.zone-cell:hover .zone-number { color: var(--text); }
+
+.zone-pct {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ─── Error Buttons ──────────────────────────────────────── */
+
+.error-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.btn-error {
+  flex: 1;
+  padding: 0.75rem 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s, transform 0.08s;
+  color: #fff;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-error:hover { opacity: 0.88; }
+.btn-error:active { transform: scale(0.97); opacity: 0.75; }
+.btn-error.net  { background: var(--error-net); }
+.btn-error.oob  { background: var(--error-oob); }
+
+/* ─── Flash ──────────────────────────────────────────────── */
+
+.flash {
+  margin-top: 0.6rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  animation: fadein 0.15s ease;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Stats Panel ────────────────────────────────────────── */
+
+.stats-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+}
+
+.stats-panel h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.sample-count {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.stats-table th {
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-table td {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.stats-table tr:last-child td { border-bottom: none; }
+.stats-table .has-data td { color: var(--text); }
+.stats-table tr:not(.has-data) td { color: var(--text-muted); }
+
+.pct-cell {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+/* ─── About Page ─────────────────────────────────────────── */
+
+.about-page .card h2 {
+  margin-bottom: 1.25rem;
+}
+
+.about-section {
+  margin-bottom: 1.5rem;
+}
+
+.about-section:last-child {
+  margin-bottom: 0;
+}
+
+.about-section h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.5rem;
+}
+
+.about-section p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+
+.about-section p:last-child {
+  margin-bottom: 0;
+}
+
+.about-section strong {
+  color: var(--text);
+  font-weight: 700;
+}
