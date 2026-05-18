@@ -19,9 +19,10 @@ function luminanceFromHex(hex) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-const SURFACE_L = 0.009
-function contrastOnDark(hex) {
-  return (luminanceFromHex(hex) + 0.05) / (SURFACE_L + 0.05)
+// Contrast ratio against the light surface (white, luminance 1.0)
+function contrastOnSurface(hex) {
+  const L = luminanceFromHex(hex)
+  return (1.0 + 0.05) / (L + 0.05)
 }
 
 function applyPreviewColor(primary) {
@@ -119,7 +120,7 @@ export default function Admin({ onSettingsChanged, onImported }) {
     }
   }
 
-  const primaryContrast = contrastOnDark(primaryColor)
+  const primaryContrast = contrastOnSurface(primaryColor)
 
   return (
     <div className="admin-page">
@@ -154,8 +155,8 @@ export default function Admin({ onSettingsChanged, onImported }) {
               {primaryContrast < 4.5 && (
                 <span className="color-warn">
                   {primaryContrast < 2.0
-                    ? '⚠ Too dark — nearly invisible on dark backgrounds'
-                    : '⚠ Low contrast on dark background'}
+                    ? '⚠ Too light — nearly invisible on light backgrounds'
+                    : '⚠ Low contrast on light background'}
                 </span>
               )}
             </div>

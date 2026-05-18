@@ -11,30 +11,30 @@
 
 :root {
   /* Primary brand color — overridden at runtime from team settings */
-  --brand-primary:      #00b8e6;
-  --brand-primary-glow: rgba(0, 184, 230, 0.22);
-  --brand-primary-dim:  rgba(0, 184, 230, 0.09);
+  --brand-primary:      #0077cc;
+  --brand-primary-glow: rgba(0, 119, 204, 0.22);
+  --brand-primary-dim:  rgba(0, 119, 204, 0.09);
 
   /* Fixed action color */
   --brand-secondary:     #ff6420;
 
   /* Fixed semantic colors */
   --ok:        #00cc80;
-  --net-color: #ff3c3c;
-  --oob-color: #b94fff;
+  --net-color: #e02020;
+  --oob-color: #8b22e0;
 
   /* Surfaces */
-  --bg:           #060917;
-  --surface:      #0c1427;
-  --surface2:     #111d35;
-  --surface3:     #162040;
-  --border:       #1c2b44;
-  --border-bright: #28406a;
+  --bg:            #eef1f6;
+  --surface:       #ffffff;
+  --surface2:      #f2f5f9;
+  --surface3:      #e8edf5;
+  --border:        #d8e0ec;
+  --border-bright: #c0cce0;
 
   /* Text */
-  --text:       #dde6f5;
-  --text-dim:   #6b83a8;
-  --text-muted: #364e6e;
+  --text:       #0d1f3c;
+  --text-dim:   #5a6e8a;
+  --text-muted: #9aaabe;
 
   --radius:    8px;
   --radius-sm: 4px;
@@ -186,6 +186,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 @media (min-width: 480px) {
