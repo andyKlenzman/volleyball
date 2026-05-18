@@ -488,19 +488,6 @@ input[type="text"]:focus {
   color: var(--accent);
 }
 
-/* ─── Entry Layout ─────────────────────────────────────────────── */
-
-.entry-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-@media (min-width: 660px) {
-  .entry-layout { grid-template-columns: 1.15fr 0.85fr; }
-}
-
 /* ─── Court Diagram ─────────────────────────────────────────────── */
 
 .court-wrapper {
@@ -1168,59 +1155,73 @@ input[type="text"]:focus {
 }
 
 /* ─── Presentation — Mobile ───────────────────────────────────── */
+/*
+ * Root cause of overlap: topbar flex-wraps to 2 lines, and min-height: 100px
+ * on zone cells inflates the court regardless of available space.
+ * Fix: topbar never wraps (truncate long names); zones use aspect-ratio only.
+ */
 
 @media (max-width: 600px) {
   .present-overlay {
-    padding-top:    max(1rem, env(safe-area-inset-top));
-    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
-    padding-left:   max(1rem, env(safe-area-inset-left));
-    padding-right:  max(1rem, env(safe-area-inset-right));
-    gap: 0.85rem;
+    padding-top:    max(0.85rem, env(safe-area-inset-top));
+    padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+    padding-left:   max(0.85rem, env(safe-area-inset-left));
+    padding-right:  max(0.85rem, env(safe-area-inset-right));
+    gap: 0.65rem;
   }
 
-  .present-player-label {
-    font-size: clamp(1.8rem, 6vw, 2.6rem);
-  }
-
-  .present-serve-count {
-    display: none;
-  }
-
-  /* Compact court for small screens */
-  .court-wrapper--large .zone-cell {
-    min-height: 68px;
-  }
-
-  .court-wrapper--large .zone-number {
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
-  }
-
-  .court-wrapper--large .zone-pct {
-    font-size: 0.75rem;
-  }
-
-  /* Compact 3-column metrics — hide sub-text, can't read at distance anyway */
-  .present-metrics {
+  /* Single-line header — name truncates, exit button always visible */
+  .present-topbar {
+    flex-wrap: nowrap;
+    align-items: center;
     gap: 0.5rem;
   }
 
-  .metric-card {
-    padding: 0.7rem 0.4rem;
+  .present-player-label {
+    flex: 1;
+    min-width: 0;
+    font-size: clamp(1.5rem, 5.5vw, 2.2rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
+
+  .present-topbar-right {
+    flex-shrink: 0;
+    gap: 0.4rem;
+  }
+
+  .present-serve-count { display: none; }
+
+  /* Remove fixed min-height — let aspect-ratio alone control zone height.
+     On ~100px-wide zones (2:1 ratio) this gives ~50px rows, plenty for display. */
+  .court-wrapper--large .zone-cell {
+    min-height: unset;
+    aspect-ratio: 2 / 1;
+  }
+
+  .court-wrapper--large .zone-number {
+    font-size: clamp(1.3rem, 3.8vw, 2rem);
+  }
+
+  .court-wrapper--large .zone-pct {
+    font-size: 0.7rem;
+  }
+
+  /* Compact 3-column metrics — sub-text hidden, can't read at distance anyway */
+  .present-metrics { gap: 0.4rem; }
+
+  .metric-card { padding: 0.6rem 0.35rem; }
 
   .metric-label {
-    font-size: 0.52rem;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.3rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
   }
 
-  .metric-value {
-    font-size: clamp(1.9rem, 5.5vw, 2.5rem);
-  }
+  .metric-value { font-size: clamp(1.7rem, 5vw, 2.3rem); }
 
-  .metric-sub {
-    display: none;
-  }
+  .metric-sub { display: none; }
 }
 
 /* ─── About Page ─────────────────────────────────────────────── */

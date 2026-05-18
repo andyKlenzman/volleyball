@@ -51,12 +51,12 @@ export default function App() {
         {page === 'tracker' ? (
           <>
             <AddPlayer onPlayerAdded={handlePlayerAdded} />
-            <DataManager onImported={handleDataImported} />
             <ServeEntry
               players={players}
               onServeAdded={handleServeAdded}
               onPlayersChanged={handlePlayerAdded}
             />
+            <DataManager onImported={handleDataImported} />
           </>
         ) : (
           <About />

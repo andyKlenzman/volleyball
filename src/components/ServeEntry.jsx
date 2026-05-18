@@ -2,7 +2,6 @@
 // ABOUTME: Selecting a player immediately shows their stats; clicking zones/errors records a serve
 import { useState, useEffect } from 'react'
 import CourtDiagram from './CourtDiagram.jsx'
-import PlayerStats from './PlayerStats.jsx'
 import PresentationView from './PresentationView.jsx'
 import { addServe, playerStats, removePlayer, updatePlayerName, undoLastServe } from '../storage.js'
 
@@ -143,38 +142,34 @@ export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) 
         </div>
 
         {selectedPlayer && (
-          <div className="entry-layout">
-            <div className="card court-section">
-              <div className="court-header">
-                <div className="player-display">
-                  <span className="player-jersey">#{selectedPlayer.number}</span>
-                  {selectedPlayer.name && <span className="player-name-label">{selectedPlayer.name}</span>}
-                </div>
-                {stats && stats.total > 0 && (
-                  <button className="btn-undo" onClick={handleUndo}>↩ Undo</button>
-                )}
+          <div className="card">
+            <div className="court-header">
+              <div className="player-display">
+                <span className="player-jersey">#{selectedPlayer.number}</span>
+                {selectedPlayer.name && <span className="player-name-label">{selectedPlayer.name}</span>}
               </div>
-              <CourtDiagram
-                stats={stats}
-                onZoneClick={recordServe}
-              />
-              <div className="error-buttons">
-                <button className="btn-error net" onClick={() => recordServe('net')}>
-                  Net
-                </button>
-                <button className="btn-error oob" onClick={() => recordServe('oob')}>
-                  Out of Bounds
-                </button>
-              </div>
-              {flash && <div className="flash">{flash}</div>}
               {stats && stats.total > 0 && (
-                <button className="btn-board" onClick={() => setPresentMode(true)}>
-                  Show Team ▸
-                </button>
+                <button className="btn-undo" onClick={handleUndo}>↩ Undo</button>
               )}
             </div>
-
-            <PlayerStats player={selectedPlayer} stats={stats || { total: 0, counts: {}, pct: {} }} />
+            <CourtDiagram
+              stats={stats}
+              onZoneClick={recordServe}
+            />
+            <div className="error-buttons">
+              <button className="btn-error net" onClick={() => recordServe('net')}>
+                Net
+              </button>
+              <button className="btn-error oob" onClick={() => recordServe('oob')}>
+                Out of Bounds
+              </button>
+            </div>
+            {flash && <div className="flash">{flash}</div>}
+            {stats && stats.total > 0 && (
+              <button className="btn-board" onClick={() => setPresentMode(true)}>
+                Show Team ▸
+              </button>
+            )}
           </div>
         )}
       </div>
