@@ -47,8 +47,7 @@ export default function About() {
           </p>
           <p>
             Admin also lets you set your <strong>team name</strong> (shown in the header)
-            and pick <strong>primary and secondary colors</strong> to match your team's
-            branding.
+            and pick a <strong>team color</strong> for highlights and active states.
           </p>
         </div>
 
