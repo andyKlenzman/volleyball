@@ -1,9 +1,29 @@
-// ABOUTME: localStorage persistence layer for players and serve entries
-// ABOUTME: All data is stored as JSON under two keys: vb_players and vb_serves
+// ABOUTME: localStorage persistence layer for players, serves, and team settings
+// ABOUTME: All data is stored as JSON under vb_players, vb_serves, and vb_settings
 
 const KEYS = {
   players: 'vb_players',
   serves: 'vb_serves',
+  settings: 'vb_settings',
+}
+
+const DEFAULT_SETTINGS = {
+  teamName: '',
+  primaryColor: '#00b8e6',
+  secondaryColor: '#ff6420',
+}
+
+export function loadSettings() {
+  try {
+    const raw = localStorage.getItem(KEYS.settings)
+    return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : { ...DEFAULT_SETTINGS }
+  } catch {
+    return { ...DEFAULT_SETTINGS }
+  }
+}
+
+export function saveSettings(settings) {
+  localStorage.setItem(KEYS.settings, JSON.stringify(settings))
 }
 
 export function loadPlayers() {

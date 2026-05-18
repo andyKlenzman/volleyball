@@ -34,17 +34,21 @@ export default function About() {
         </div>
 
         <div className="about-section">
-          <h3>Data Storage</h3>
+          <h3>Data &amp; Settings</h3>
           <p>
             All data is saved in this browser's <strong>local storage</strong> on this
             device — nothing is sent to a server. Your roster and every serve entry
             persist between sessions as long as you use the same browser profile.
           </p>
           <p>
-            Use <strong>Export</strong> at the bottom of the page to save a backup file
-            after a session. On iPad, this opens the iOS share sheet so you can save to
-            Files, AirDrop it, or email it. Use <strong>Import</strong> to restore a
-            previously saved file — you'll see a summary before anything is replaced.
+            Open <strong>Admin</strong> to export a backup after each session or import
+            a previously saved file. On iPad, export opens the native share sheet so
+            you can save to Files, AirDrop it, or email it.
+          </p>
+          <p>
+            Admin also lets you set your <strong>team name</strong> (shown in the header)
+            and pick <strong>primary and secondary colors</strong> to match your team's
+            branding.
           </p>
         </div>
 
