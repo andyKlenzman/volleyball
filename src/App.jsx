@@ -15,12 +15,9 @@ function hexToRgb(hex) {
 function applyBrandColors(settings) {
   const root = document.documentElement
   const p = hexToRgb(settings.primaryColor) || [0, 184, 230]
-  const s = hexToRgb(settings.secondaryColor) || [255, 100, 32]
   root.style.setProperty('--brand-primary', settings.primaryColor)
   root.style.setProperty('--brand-primary-glow', `rgba(${p[0]},${p[1]},${p[2]},0.22)`)
   root.style.setProperty('--brand-primary-dim',  `rgba(${p[0]},${p[1]},${p[2]},0.09)`)
-  root.style.setProperty('--brand-secondary',     settings.secondaryColor)
-  root.style.setProperty('--brand-secondary-glow', `rgba(${s[0]},${s[1]},${s[2]},0.22)`)
 }
 
 export default function App() {

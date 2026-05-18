@@ -10,12 +10,13 @@
 }
 
 :root {
-  /* Brand colors — defaults overridden at runtime from team settings */
-  --brand-primary:       #00b8e6;
-  --brand-primary-glow:  rgba(0, 184, 230, 0.22);
-  --brand-primary-dim:   rgba(0, 184, 230, 0.09);
+  /* Primary brand color — overridden at runtime from team settings */
+  --brand-primary:      #00b8e6;
+  --brand-primary-glow: rgba(0, 184, 230, 0.22);
+  --brand-primary-dim:  rgba(0, 184, 230, 0.09);
+
+  /* Fixed action color */
   --brand-secondary:     #ff6420;
-  --brand-secondary-glow: rgba(255, 100, 32, 0.22);
 
   /* Fixed semantic colors */
   --ok:        #00cc80;

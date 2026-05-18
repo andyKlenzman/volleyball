@@ -19,28 +19,23 @@ function luminanceFromHex(hex) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-// Contrast ratio against the dark surface background (#0c1427, luminance ~0.009)
 const SURFACE_L = 0.009
 function contrastOnDark(hex) {
   return (luminanceFromHex(hex) + 0.05) / (SURFACE_L + 0.05)
 }
 
-function applyPreviewColors(primary, secondary) {
+function applyPreviewColor(primary) {
   const root = document.documentElement
   const p = hexToRgb(primary) || [0, 184, 230]
-  const s = hexToRgb(secondary) || [255, 100, 32]
   root.style.setProperty('--brand-primary', primary)
   root.style.setProperty('--brand-primary-glow', `rgba(${p[0]},${p[1]},${p[2]},0.22)`)
   root.style.setProperty('--brand-primary-dim',  `rgba(${p[0]},${p[1]},${p[2]},0.09)`)
-  root.style.setProperty('--brand-secondary',     secondary)
-  root.style.setProperty('--brand-secondary-glow', `rgba(${s[0]},${s[1]},${s[2]},0.22)`)
 }
 
 export default function Admin({ onSettingsChanged, onImported }) {
   const initial = loadSettings()
   const [teamName, setTeamName] = useState(initial.teamName)
   const [primaryColor, setPrimaryColor] = useState(initial.primaryColor)
-  const [secondaryColor, setSecondaryColor] = useState(initial.secondaryColor)
   const [saved, setSaved] = useState(false)
 
   const fileInputRef = useRef(null)
@@ -50,16 +45,11 @@ export default function Admin({ onSettingsChanged, onImported }) {
 
   function handlePrimaryChange(e) {
     setPrimaryColor(e.target.value)
-    applyPreviewColors(e.target.value, secondaryColor)
-  }
-
-  function handleSecondaryChange(e) {
-    setSecondaryColor(e.target.value)
-    applyPreviewColors(primaryColor, e.target.value)
+    applyPreviewColor(e.target.value)
   }
 
   function handleSave() {
-    const settings = { teamName: teamName.trim(), primaryColor, secondaryColor }
+    const settings = { teamName: teamName.trim(), primaryColor }
     saveSettings(settings)
     onSettingsChanged(settings)
     setSaved(true)
@@ -130,7 +120,6 @@ export default function Admin({ onSettingsChanged, onImported }) {
   }
 
   const primaryContrast = contrastOnDark(primaryColor)
-  const secondaryContrast = contrastOnDark(secondaryColor)
 
   return (
     <div className="admin-page">
@@ -150,11 +139,9 @@ export default function Admin({ onSettingsChanged, onImported }) {
             />
             <p className="admin-hint">Replaces SERVETRACK in the header when set</p>
           </div>
-        </div>
 
-        <div className="admin-section">
           <div className="admin-field">
-            <label className="admin-label">Primary Color</label>
+            <label className="admin-label">Team Color</label>
             <div className="color-row">
               <input
                 type="color"
@@ -172,36 +159,8 @@ export default function Admin({ onSettingsChanged, onImported }) {
                 </span>
               )}
             </div>
-            <p className="admin-hint">Active states, borders, zone highlights, nav indicator</p>
+            <p className="admin-hint">Used for active states, borders, and highlights</p>
           </div>
-
-          <div className="admin-field">
-            <label className="admin-label">Secondary Color</label>
-            <div className="color-row">
-              <input
-                type="color"
-                value={secondaryColor}
-                onChange={handleSecondaryChange}
-                className="color-input"
-              />
-              <span className="color-swatch" style={{ background: secondaryColor }} />
-              <span className="color-hex">{secondaryColor.toUpperCase()}</span>
-              {secondaryContrast < 4.5 && (
-                <span className="color-warn">
-                  {secondaryContrast < 2.0
-                    ? '⚠ Too dark — nearly invisible on dark backgrounds'
-                    : '⚠ Low contrast on dark background'}
-                </span>
-              )}
-            </div>
-            <p className="admin-hint">Action buttons, hot zone badge, primary CTAs</p>
-          </div>
-
-          <p className="admin-color-note">
-            Colors are used as accents only — text always stays on a dark neutral surface,
-            so readable text is guaranteed regardless of which colors you choose. Warnings
-            only appear when a color would be hard to see as a border or glow.
-          </p>
         </div>
 
         <button className="btn-save-settings" onClick={handleSave}>

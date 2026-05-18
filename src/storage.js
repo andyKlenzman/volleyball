@@ -10,7 +10,6 @@ const KEYS = {
 const DEFAULT_SETTINGS = {
   teamName: '',
   primaryColor: '#00b8e6',
-  secondaryColor: '#ff6420',
 }
 
 export function loadSettings() {
