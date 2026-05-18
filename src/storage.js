@@ -75,6 +75,25 @@ export function addServe(playerNumber, result) {
   return updated
 }
 
+// Returns a snapshot of all data suitable for JSON export
+export function exportData() {
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    players: loadPlayers(),
+    serves: loadServes(),
+  }
+}
+
+// Validates and replaces all data from an imported snapshot
+export function importData(data) {
+  if (!data || !Array.isArray(data.players) || !Array.isArray(data.serves)) {
+    throw new Error('File is missing players or serves data')
+  }
+  savePlayers(data.players)
+  saveServes(data.serves)
+}
+
 // Returns stats for a single player: counts and percentages per result
 export function playerStats(playerNumber) {
   const serves = loadServes().filter(s => s.playerNumber === playerNumber)

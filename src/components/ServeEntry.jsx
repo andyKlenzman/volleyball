@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import CourtDiagram from './CourtDiagram.jsx'
 import PlayerStats from './PlayerStats.jsx'
+import PresentationView from './PresentationView.jsx'
 import { addServe, playerStats, removePlayer, updatePlayerName, undoLastServe } from '../storage.js'
 
 export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) {
@@ -11,6 +12,7 @@ export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) 
   const [flash, setFlash] = useState('')
   const [editingNumber, setEditingNumber] = useState(null)
   const [editName, setEditName] = useState('')
+  const [presentMode, setPresentMode] = useState(false)
 
   function refreshStats(number) {
     setStats(playerStats(number))
@@ -20,10 +22,20 @@ export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) 
     if (selectedNumber !== null) refreshStats(selectedNumber)
   }, [selectedNumber])
 
+  // Clear stale selection when the players list changes (e.g. after data import)
+  useEffect(() => {
+    if (selectedNumber !== null && !players.find(p => p.number === selectedNumber)) {
+      setSelectedNumber(null)
+      setStats(null)
+      setPresentMode(false)
+    }
+  }, [players, selectedNumber])
+
   function handlePlayerSelect(number) {
     if (editingNumber !== null) return
     setSelectedNumber(number)
     setFlash('')
+    setPresentMode(false)
   }
 
   function handleDeletePlayer(e, number) {
@@ -32,6 +44,7 @@ export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) 
     if (selectedNumber === number) {
       setSelectedNumber(null)
       setStats(null)
+      setPresentMode(false)
     }
     onPlayersChanged(updated)
   }
@@ -79,75 +92,92 @@ export default function ServeEntry({ players, onServeAdded, onPlayersChanged }) 
   const selectedPlayer = players.find(p => p.number === selectedNumber) || null
 
   return (
-    <div className="serve-entry">
-      <div className="card player-select-section">
-        <h2>Select Player</h2>
-        <div className="player-chips">
-          {players.length === 0 && <p className="muted">Add players above first.</p>}
-          {players.map(p => (
-            <div
-              key={p.number}
-              className={`player-chip ${selectedNumber === p.number ? 'active' : ''}`}
-              onClick={() => handlePlayerSelect(p.number)}
-            >
-              <span className="chip-number">#{p.number}</span>
-              {editingNumber === p.number ? (
-                <input
-                  className="chip-edit-input"
-                  value={editName}
-                  autoFocus
-                  onChange={e => setEditName(e.target.value)}
-                  onBlur={() => handleEditSave(p.number)}
-                  onKeyDown={e => handleEditKeyDown(e, p.number)}
-                  onClick={e => e.stopPropagation()}
-                />
-              ) : (
-                <span
-                  className="chip-name chip-name-editable"
-                  onClick={e => handleEditStart(e, p)}
-                  title="Tap to edit name"
-                >
-                  {p.name || 'add name'}
-                </span>
-              )}
-              <button
-                className="chip-delete"
-                onClick={e => handleDeletePlayer(e, p.number)}
-                title="Remove player"
-              >×</button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {selectedPlayer && (
-        <div className="entry-layout">
-          <div className="card court-section">
-            <div className="court-header">
-              <h2>#{selectedPlayer.number}{selectedPlayer.name ? ` ${selectedPlayer.name}` : ''}</h2>
-              {stats && stats.total > 0 && (
-                <button className="btn-undo" onClick={handleUndo}>Undo</button>
-              )}
-            </div>
-            <CourtDiagram
-              playerNumber={selectedNumber}
-              stats={stats}
-              onZoneClick={recordServe}
-            />
-            <div className="error-buttons">
-              <button className="btn-error net" onClick={() => recordServe('net')}>
-                Net
-              </button>
-              <button className="btn-error oob" onClick={() => recordServe('oob')}>
-                Out of Bounds
-              </button>
-            </div>
-            {flash && <div className="flash">{flash}</div>}
-          </div>
-
-          <PlayerStats player={selectedPlayer} stats={stats || { total: 0, counts: {}, pct: {} }} />
-        </div>
+    <>
+      {presentMode && selectedPlayer && stats && (
+        <PresentationView
+          player={selectedPlayer}
+          stats={stats}
+          onExit={() => setPresentMode(false)}
+        />
       )}
-    </div>
+
+      <div className="serve-entry">
+        <div className="card player-select-section">
+          <h2>Select Player</h2>
+          <div className="player-chips">
+            {players.length === 0 && <p className="muted">Add players above first.</p>}
+            {players.map(p => (
+              <div
+                key={p.number}
+                className={`player-chip ${selectedNumber === p.number ? 'active' : ''}`}
+                onClick={() => handlePlayerSelect(p.number)}
+              >
+                <span className="chip-number">#{p.number}</span>
+                {editingNumber === p.number ? (
+                  <input
+                    className="chip-edit-input"
+                    value={editName}
+                    autoFocus
+                    onChange={e => setEditName(e.target.value)}
+                    onBlur={() => handleEditSave(p.number)}
+                    onKeyDown={e => handleEditKeyDown(e, p.number)}
+                    onClick={e => e.stopPropagation()}
+                  />
+                ) : (
+                  <span
+                    className="chip-name chip-name-editable"
+                    onClick={e => handleEditStart(e, p)}
+                    title="Tap to edit name"
+                  >
+                    {p.name || 'add name'}
+                  </span>
+                )}
+                <button
+                  className="chip-delete"
+                  onClick={e => handleDeletePlayer(e, p.number)}
+                  title="Remove player"
+                >×</button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {selectedPlayer && (
+          <div className="entry-layout">
+            <div className="card court-section">
+              <div className="court-header">
+                <div className="player-display">
+                  <span className="player-jersey">#{selectedPlayer.number}</span>
+                  {selectedPlayer.name && <span className="player-name-label">{selectedPlayer.name}</span>}
+                </div>
+                {stats && stats.total > 0 && (
+                  <button className="btn-undo" onClick={handleUndo}>↩ Undo</button>
+                )}
+              </div>
+              <CourtDiagram
+                stats={stats}
+                onZoneClick={recordServe}
+              />
+              <div className="error-buttons">
+                <button className="btn-error net" onClick={() => recordServe('net')}>
+                  Net
+                </button>
+                <button className="btn-error oob" onClick={() => recordServe('oob')}>
+                  Out of Bounds
+                </button>
+              </div>
+              {flash && <div className="flash">{flash}</div>}
+              {stats && stats.total > 0 && (
+                <button className="btn-board" onClick={() => setPresentMode(true)}>
+                  Show Team ▸
+                </button>
+              )}
+            </div>
+
+            <PlayerStats player={selectedPlayer} stats={stats || { total: 0, counts: {}, pct: {} }} />
+          </div>
+        )}
+      </div>
+    </>
   )
 }
