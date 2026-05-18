@@ -10,7 +10,46 @@
 }
 
 :root {
-  /* Court diagram */
+  /* ── Surfaces ────────────────────────────────────────────────── */
+  --bg:            #eef1f6;
+  --surface:       #ffffff;
+  --surface2:      #f2f5f9;
+  --surface3:      #e8edf5;
+  --border:        #d8e0ec;
+  --border-bright: #c0cce0;
+
+  /* ── Text ────────────────────────────────────────────────────── */
+  --text:          #0d1f3c;
+  --text-dim:      #5a6e8a;
+  --text-muted:    #9aaabe;
+  --text-on-color: #fff;       /* always white on coloured button backgrounds */
+
+  /* ── Brand — primary overridden at runtime from team settings ── */
+  --brand-primary:      #0077cc;
+  --brand-primary-glow: rgba(0, 119, 204, 0.22);
+  --brand-primary-dim:  rgba(0, 119, 204, 0.09);
+
+  /* ── Fixed action colour — dark enough for --text-on-color ───── */
+  --brand-secondary: #cc4400;
+
+  /* ── Semantic colours ────────────────────────────────────────── */
+  --ok:        #00cc80;
+  --net-color: #e02020;
+  --oob-color: #8b22e0;
+
+  /* ── Derived tints — pre-baked because CSS can't do            ─ */
+  /* ── rgba(var(--x), 0.1); update if base colour changes        ─ */
+  --ok-bg:          rgba(0, 204, 128, 0.08);
+  --ok-border:      rgba(0, 204, 128, 0.25);
+  --warning-color:  #cc5500;
+  --warning-bg:     rgba(204, 85, 0, 0.08);
+  --warning-border: rgba(204, 85, 0, 0.25);
+  --attack-line:    rgba(204, 68, 0, 0.35);  /* --brand-secondary at 35% */
+
+  /* ── Elevation ───────────────────────────────────────────────── */
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+  /* ── Court diagram ───────────────────────────────────────────── */
   --court-bg:          #e8ecf2;
   --zone-bg:           rgba(255, 255, 255, 0.55);
   --zone-border:       rgba(0, 0, 0, 0.10);
@@ -19,32 +58,7 @@
   --zone-number-large: rgba(0, 0, 0, 0.55);
   --zone-pct:          rgba(0, 0, 0, 0.72);
 
-  /* Primary brand color — overridden at runtime from team settings */
-  --brand-primary:      #0077cc;
-  --brand-primary-glow: rgba(0, 119, 204, 0.22);
-  --brand-primary-dim:  rgba(0, 119, 204, 0.09);
-
-  /* Fixed action color — dark enough for white text at 4.5:1 */
-  --brand-secondary:     #cc4400;
-
-  /* Fixed semantic colors */
-  --ok:        #00cc80;
-  --net-color: #e02020;
-  --oob-color: #8b22e0;
-
-  /* Surfaces */
-  --bg:            #eef1f6;
-  --surface:       #ffffff;
-  --surface2:      #f2f5f9;
-  --surface3:      #e8edf5;
-  --border:        #d8e0ec;
-  --border-bright: #c0cce0;
-
-  /* Text */
-  --text:       #0d1f3c;
-  --text-dim:   #5a6e8a;
-  --text-muted: #9aaabe;
-
+  /* ── Spacing & shape ─────────────────────────────────────────── */
   --radius:    8px;
   --radius-sm: 4px;
   font-size: 16px;
@@ -116,8 +130,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: rgba(0, 204, 128, 0.08);
-  border: 1px solid rgba(0, 204, 128, 0.25);
+  background: var(--ok-bg);
+  border: 1px solid var(--ok-border);
   border-radius: 3px;
   padding: 0.18rem 0.52rem;
   font-family: 'JetBrains Mono', monospace;
@@ -195,7 +209,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
 }
 
 @media (min-width: 480px) {
@@ -261,7 +275,7 @@ input[type="text"]:focus {
 
 .btn-primary {
   background: var(--brand-secondary);
-  color: #fff;
+  color: var(--text-on-color);
   border: none;
   border-radius: var(--radius-sm);
   padding: 0.58rem 1.3rem;
@@ -515,7 +529,7 @@ input[type="text"]:focus {
 .attack-line {
   width: 92%;
   height: 1px;
-  background: rgba(255, 100, 32, 0.4);
+  background: var(--attack-line);
   margin: 5px 0;
 }
 
@@ -606,7 +620,7 @@ input[type="text"]:focus {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-on-color);
   transition: opacity 0.15s, transform 0.08s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -723,7 +737,7 @@ input[type="text"]:focus {
   background: var(--brand-secondary);
   border: none;
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: var(--text-on-color);
   font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
@@ -828,11 +842,11 @@ input[type="text"]:focus {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
   font-weight: 700;
-  color: #ff7a40;
+  color: var(--warning-color);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: rgba(255, 122, 64, 0.1);
-  border: 1px solid rgba(255, 122, 64, 0.3);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
   border-radius: 3px;
   padding: 0.2rem 0.55rem;
 }
@@ -1126,7 +1140,7 @@ input[type="text"]:focus {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -1141,7 +1155,7 @@ input[type="text"]:focus {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem;
   font-weight: 700;
-  color: #ff7a40;
+  color: var(--warning-color);
   letter-spacing: 0.03em;
 }
 
@@ -1150,7 +1164,7 @@ input[type="text"]:focus {
   background: var(--brand-secondary);
   border: none;
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: var(--text-on-color);
   font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;

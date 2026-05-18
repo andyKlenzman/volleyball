@@ -18,13 +18,17 @@ const ZONE_GRID = [
 ]
 
 // Heatmap: cool blue (low) → amber → hot red (high)
-// Lightness at 45% keeps colors saturated enough to read on a light zone cell
+const HEAT_SATURATION = 85   // %
+const HEAT_LIGHTNESS  = 45   // % — lower = more saturated on a light background
+const HEAT_ALPHA_MIN  = 0.15 // opacity at lowest non-zero frequency
+const HEAT_ALPHA_MAX  = 0.80 // opacity at 100% frequency
+
 function heatColor(pct) {
   if (pct === 0) return 'transparent'
   const clamp = Math.min(pct, 100)
   const h = Math.round(210 - (clamp / 100) * 210)
-  const alpha = 0.15 + (clamp / 100) * 0.65
-  return `hsla(${h}, 85%, 45%, ${alpha})`
+  const alpha = HEAT_ALPHA_MIN + (clamp / 100) * (HEAT_ALPHA_MAX - HEAT_ALPHA_MIN)
+  return `hsla(${h}, ${HEAT_SATURATION}%, ${HEAT_LIGHTNESS}%, ${alpha})`
 }
 
 export default function CourtDiagram({ stats, onZoneClick, large = false, readOnly = false }) {
